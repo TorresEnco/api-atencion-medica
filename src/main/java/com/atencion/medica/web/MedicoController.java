@@ -1,7 +1,7 @@
 package com.atencion.medica.web;
 
 import com.atencion.medica.dtos.MedicoDTO;
-import com.atencion.medica.dtos.RecetaDTO;
+import com.atencion.medica.dtos.CitaDTO;
 import com.atencion.medica.servicios.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,9 +30,24 @@ public class MedicoController {
         return ResponseEntity.ok(medicoService.obtenerMedicoPorId(id));
     }
 
-    @PostMapping("/recetas")
-    public ResponseEntity<RecetaDTO> crearReceta(@RequestBody RecetaDTO recetaDTO) {
-        RecetaDTO nuevaReceta = medicoService.crearReceta(recetaDTO);
-        return new ResponseEntity<>(nuevaReceta, HttpStatus.CREATED);
+    @GetMapping("/citas/medico/{medicoId}")
+    public ResponseEntity<List<CitaDTO>> obtenerCitasPorMedico(@PathVariable Long medicoId) {
+        return ResponseEntity.ok(medicoService.obtenerCitasPorMedico(medicoId));
+    }
+
+    @GetMapping("/citas/{citaId}")
+    public ResponseEntity<CitaDTO> obtenerCitaPorId(@PathVariable Long citaId) {
+        return ResponseEntity.ok(medicoService.obtenerCitaPorId(citaId));
+    }
+
+    @PutMapping("/citas/{citaId}")
+    public ResponseEntity<CitaDTO> actualizarCita(@PathVariable Long citaId, @RequestBody CitaDTO citaDTO) {
+        return ResponseEntity.ok(medicoService.actualizarCita(citaId, citaDTO));
+    }
+
+    @DeleteMapping("/citas/{citaId}")
+    public ResponseEntity<Void> cancelarCita(@PathVariable Long citaId) {
+        medicoService.cancelarCita(citaId);
+        return ResponseEntity.noContent().build();
     }
 }

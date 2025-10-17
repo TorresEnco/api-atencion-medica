@@ -23,7 +23,7 @@ public class Medico {
     @Enumerated(EnumType.STRING)
     private EspecialidadMedico especialidad;
 
-    // Un médico puede emitir muchas recetas
+    // Un médico puede tener muchas citas
     @OneToMany(mappedBy = "medico", fetch = FetchType.LAZY)
-    private List<Receta> recetasEmitidas;
+    private List<Cita> citas;
 }

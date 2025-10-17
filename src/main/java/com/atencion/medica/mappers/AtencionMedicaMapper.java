@@ -2,10 +2,10 @@ package com.atencion.medica.mappers;
 
 import com.atencion.medica.dtos.MedicoDTO;
 import com.atencion.medica.dtos.PacienteDTO;
-import com.atencion.medica.dtos.RecetaDTO;
+import com.atencion.medica.dtos.CitaDTO;
 import com.atencion.medica.entidades.Medico;
 import com.atencion.medica.entidades.Paciente;
-import com.atencion.medica.entidades.Receta;
+import com.atencion.medica.entidades.Cita;
 
 import java.util.List;
 
@@ -16,8 +16,8 @@ public interface AtencionMedicaMapper {
     PacienteDTO pacienteToPacienteDTO(Paciente paciente);
     Paciente pacienteDTOToPaciente(PacienteDTO pacienteDTO);
 
-    RecetaDTO recetaToRecetaDTO(Receta receta);
-    Receta recetaDTOToReceta(RecetaDTO recetaDTO);
+    CitaDTO citaToCitaDTO(Cita cita);
+    Cita citaDTOToCita(CitaDTO citaDTO);
 
-    List<RecetaDTO> recetasToRecetasDTO(List<Receta> recetas);
+    List<CitaDTO> citasToCitasDTO(List<Cita> citas);
 }

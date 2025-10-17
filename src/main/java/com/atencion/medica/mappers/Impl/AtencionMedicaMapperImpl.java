@@ -2,10 +2,10 @@ package com.atencion.medica.mappers.Impl;
 
 import com.atencion.medica.dtos.MedicoDTO;
 import com.atencion.medica.dtos.PacienteDTO;
-import com.atencion.medica.dtos.RecetaDTO;
+import com.atencion.medica.dtos.CitaDTO;
 import com.atencion.medica.entidades.Medico;
 import com.atencion.medica.entidades.Paciente;
-import com.atencion.medica.entidades.Receta;
+import com.atencion.medica.entidades.Cita;
 import com.atencion.medica.mappers.AtencionMedicaMapper;
 import org.springframework.stereotype.Service;
 
@@ -64,34 +64,38 @@ public class AtencionMedicaMapperImpl implements AtencionMedicaMapper {
     }
 
     @Override
-    public RecetaDTO recetaToRecetaDTO(Receta receta) {
-        if (receta == null) return null;
-        RecetaDTO dto = new RecetaDTO();
-        dto.setId(receta.getId());
-        dto.setMedicamento(receta.getMedicamento());
-        dto.setDosis(receta.getDosis());
-        dto.setFechaEmision(receta.getFechaEmision());
-        dto.setEstadoReceta(receta.getEstadoReceta());
-        dto.setMedicoDTO(medicoToMedicoDTO(receta.getMedico()));
-        dto.setPacienteDTO(pacienteToPacienteDTO(receta.getPaciente()));
+    public CitaDTO citaToCitaDTO(Cita cita) {
+        if (cita == null) return null;
+        CitaDTO dto = new CitaDTO();
+        dto.setId(cita.getId());
+        dto.setFechaCita(cita.getFechaCita());
+        dto.setHoraCita(cita.getHoraCita());
+        dto.setMotivoConsulta(cita.getMotivoConsulta());
+        dto.setDiagnostico(cita.getDiagnostico());
+        dto.setNotasMedicas(cita.getNotasMedicas());
+        dto.setEstadoCita(cita.getEstadoCita());
+        dto.setMedicoDTO(medicoToMedicoDTO(cita.getMedico()));
+        dto.setPacienteDTO(pacienteToPacienteDTO(cita.getPaciente()));
         return dto;
     }
 
     @Override
-    public Receta recetaDTOToReceta(RecetaDTO recetaDTO) {
-        if (recetaDTO == null) return null;
-        Receta receta = new Receta();
-        receta.setId(recetaDTO.getId());
-        receta.setMedicamento(recetaDTO.getMedicamento());
-        receta.setDosis(recetaDTO.getDosis());
-        receta.setFechaEmision(recetaDTO.getFechaEmision());
-        receta.setEstadoReceta(recetaDTO.getEstadoReceta());
+    public Cita citaDTOToCita(CitaDTO citaDTO) {
+        if (citaDTO == null) return null;
+        Cita cita = new Cita();
+        cita.setId(citaDTO.getId());
+        cita.setFechaCita(citaDTO.getFechaCita());
+        cita.setHoraCita(citaDTO.getHoraCita());
+        cita.setMotivoConsulta(citaDTO.getMotivoConsulta());
+        cita.setDiagnostico(citaDTO.getDiagnostico());
+        cita.setNotasMedicas(citaDTO.getNotasMedicas());
+        cita.setEstadoCita(citaDTO.getEstadoCita());
         // El médico y el paciente se asignarán en la capa de servicio
-        return receta;
+        return cita;
     }
 
     @Override
-    public List<RecetaDTO> recetasToRecetasDTO(List<Receta> recetas) {
-        return recetas.stream().map(this::recetaToRecetaDTO).collect(Collectors.toList());
+    public List<CitaDTO> citasToCitasDTO(List<Cita> citas) {
+        return citas.stream().map(this::citaToCitaDTO).collect(Collectors.toList());
     }
 }
