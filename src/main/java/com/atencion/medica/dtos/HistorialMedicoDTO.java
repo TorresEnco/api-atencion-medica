@@ -10,5 +10,5 @@ public class HistorialMedicoDTO {
     private int currentPage;
     private int totalPages;
     private int pageSize;
-    private List<RecetaDTO> recetasDTO; // Lista de recetas del paciente
+    private List<CitaDTO> citasDTO; // Lista de citas del paciente
 }

@@ -1,0 +1,348 @@
+{
+  "info": {
+    "name": "API Atención Médica - Patient, Doctor, Appointment System",
+    "description": "Collection for testing the medical system with patient, doctor, and appointment entities only",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Medico Operations",
+      "item": [
+        {
+          "name": "Create Medico",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"cedulaProfesional\": \"MED12345\",\n  \"especialidad\": \"CARDIOLOGIA\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Medicos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Medico by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Paciente Operations",
+      "item": [
+        {
+          "name": "Create Paciente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"María\",\n  \"apellido\": \"González\",\n  \"fechaNacimiento\": \"1990-05-15\",\n  \"telefono\": \"555-1234\",\n  \"historialClinicoId\": \"HIST123456\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/clientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "clientes"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cita (Appointment) Operations",
+      "item": [
+        {
+          "name": "Create Cita",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fechaHora\": \"2024-01-15T10:00:00\",\n  \"motivo\": \"Consulta general\",\n  \"estado\": \"PROGRAMADA\",\n  \"medico\": {\"id\": 1},\n  \"paciente\": {\"id\": 1}\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/citas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "citas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Citas by Paciente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/citas/paciente/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "citas",
+                "paciente",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Citas by Medico",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/citas/medico/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "citas",
+                "medico",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Cita by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/citas/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "citas",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Cita",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fechaHora\": \"2024-01-15T11:00:00\",\n  \"motivo\": \"Consulta de seguimiento\",\n  \"estado\": \"COMPLETADA\",\n  \"medico\": {\"id\": 1},\n  \"paciente\": {\"id\": 1}\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/citas/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "citas",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cancel Cita",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/citas/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "citas",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Additional Test Cases",
+      "item": [
+        {
+          "name": "Get Citas by Date",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/citas?fecha=2024-01-15",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "citas"
+              ],
+              "query": [
+                {
+                  "key": "fecha",
+                  "value": "2024-01-15"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Citas by Medico ID (Alternative)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/citas?medicoId=1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "citas"
+              ],
+              "query": [
+                {
+                  "key": "medicoId",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Citas by Paciente ID (Alternative)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/citas?pacienteId=1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "citas"
+              ],
+              "query": [
+                {
+                  "key": "pacienteId",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

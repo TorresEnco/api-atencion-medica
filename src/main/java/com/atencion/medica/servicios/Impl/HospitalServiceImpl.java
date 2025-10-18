@@ -3,16 +3,16 @@ package com.atencion.medica.servicios.Impl;
 import com.atencion.medica.dtos.HistorialMedicoDTO;
 import com.atencion.medica.dtos.MedicoDTO;
 import com.atencion.medica.dtos.PacienteDTO;
-import com.atencion.medica.dtos.RecetaDTO;
 import com.atencion.medica.entidades.Medico;
 import com.atencion.medica.entidades.Paciente;
-import com.atencion.medica.entidades.Receta;
+import com.atencion.medica.entidades.Cita;
 import com.atencion.medica.excepciones.MedicoNotFoundException;
 import com.atencion.medica.excepciones.PacienteNotFoundException;
+import com.atencion.medica.excepciones.CitaNotFoundException;
 import com.atencion.medica.mappers.AtencionMedicaMapper;
 import com.atencion.medica.repositorios.MedicoRepository;
 import com.atencion.medica.repositorios.PacienteRepository;
-import com.atencion.medica.repositorios.RecetaRepository;
+import com.atencion.medica.repositorios.CitaRepository;
 import com.atencion.medica.servicios.HospitalService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class HospitalServiceImpl implements HospitalService {
     @Autowired
     private PacienteRepository pacienteRepository;
     @Autowired
-    private RecetaRepository recetaRepository;
+    private CitaRepository citaRepository;
     @Autowired
     private AtencionMedicaMapper mapper;
 
@@ -78,17 +78,17 @@ public class HospitalServiceImpl implements HospitalService {
         Paciente paciente = pacienteOpt.get();
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Receta> recetasPaginadas = recetaRepository.findByPacienteHistorialClinicoId(historialId, pageable);
+        Page<Cita> citasPaginadas = citaRepository.findByPacienteHistorialClinicoId(historialId, pageable);
 
-        List<RecetaDTO> recetasDTO = mapper.recetasToRecetasDTO(recetasPaginadas.getContent());
+        List<CitaDTO> citasDTO = mapper.citasToCitasDTO(citasPaginadas.getContent());
 
         HistorialMedicoDTO historialDTO = new HistorialMedicoDTO();
         historialDTO.setHistorialClinicoId(historialId);
         historialDTO.setNombrePaciente(paciente.getNombre() + " " + paciente.getApellido());
-        historialDTO.setCurrentPage(recetasPaginadas.getNumber());
-        historialDTO.setPageSize(recetasPaginadas.getSize());
-        historialDTO.setTotalPages(recetasPaginadas.getTotalPages());
-        historialDTO.setRecetasDTO(recetasDTO);
+        historialDTO.setCurrentPage(citasPaginadas.getNumber());
+        historialDTO.setPageSize(citasPaginadas.getSize());
+        historialDTO.setTotalPages(citasPaginadas.getTotalPages());
+        historialDTO.setCitasDTO(citasDTO);
 
         return historialDTO;
     }
@@ -101,9 +101,9 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public RecetaDTO crearReceta(RecetaDTO recetaDTO) {
-        Long medicoId = recetaDTO.getMedicoDTO().getId();
-        Long pacienteId = recetaDTO.getPacienteDTO().getId();
+    public CitaDTO crearCita(CitaDTO citaDTO) {
+        Long medicoId = citaDTO.getMedicoDTO().getId();
+        Long pacienteId = citaDTO.getPacienteDTO().getId();
 
         Medico medico = medicoRepository.findById(medicoId)
                 .orElseThrow(() -> new MedicoNotFoundException("Médico no encontrado con ID: " + medicoId));
@@ -111,11 +111,57 @@ public class HospitalServiceImpl implements HospitalService {
         Paciente paciente = pacienteRepository.findById(pacienteId)
                 .orElseThrow(() -> new PacienteNotFoundException("Paciente no encontrado con ID: " + pacienteId));
 
-        Receta receta = mapper.recetaDTOToReceta(recetaDTO);
-        receta.setMedico(medico);
-        receta.setPaciente(paciente);
+        Cita cita = mapper.citaDTOToCita(citaDTO);
+        cita.setMedico(medico);
+        cita.setPaciente(paciente);
 
-        Receta recetaGuardada = recetaRepository.save(receta);
-        return mapper.recetaToRecetaDTO(recetaGuardada);
+        Cita citaGuardada = citaRepository.save(cita);
+        return mapper.citaToCitaDTO(citaGuardada);
+    }
+
+    @Override
+    public CitaDTO obtenerCitaPorId(Long id) {
+        Cita cita = citaRepository.findById(id)
+                .orElseThrow(() -> new CitaNotFoundException("Cita no encontrada con ID: " + id));
+        return mapper.citaToCitaDTO(cita);
+    }
+
+    @Override
+    public List<CitaDTO> obtenerCitasPorMedico(Long medicoId) {
+        return mapper.citasToCitasDTO(citaRepository.findByMedicoId(medicoId));
+    }
+
+    @Override
+    public List<CitaDTO> obtenerCitasPorPaciente(Long pacienteId) {
+        return mapper.citasToCitasDTO(citaRepository.findByPacienteId(pacienteId));
+    }
+
+    @Override
+    public List<CitaDTO> obtenerCitasPorFecha(String fecha) {
+        return mapper.citasToCitasDTO(citaRepository.findByFechaCita(fecha));
+    }
+
+    @Override
+    public CitaDTO actualizarCita(Long id, CitaDTO citaDTO) {
+        Cita citaExistente = citaRepository.findById(id)
+                .orElseThrow(() -> new CitaNotFoundException("Cita no encontrada con ID: " + id));
+
+        citaExistente.setFechaCita(citaDTO.getFechaCita());
+        citaExistente.setHoraCita(citaDTO.getHoraCita());
+        citaExistente.setMotivoConsulta(citaDTO.getMotivoConsulta());
+        citaExistente.setDiagnostico(citaDTO.getDiagnostico());
+        citaExistente.setNotasMedicas(citaDTO.getNotasMedicas());
+        citaExistente.setEstadoCita(citaDTO.getEstadoCita());
+
+        Cita citaActualizada = citaRepository.save(citaExistente);
+        return mapper.citaToCitaDTO(citaActualizada);
+    }
+
+    @Override
+    public void cancelarCita(Long id) {
+        Cita cita = citaRepository.findById(id)
+                .orElseThrow(() -> new CitaNotFoundException("Cita no encontrada con ID: " + id));
+        cita.setEstadoCita(com.atencion.medica.enums.EstadoCita.CANCELADA);
+        citaRepository.save(cita);
     }
 }
