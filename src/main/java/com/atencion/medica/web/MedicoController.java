@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/medicos")
 public class MedicoController {
     @Autowired
     private HospitalService medicoService;
@@ -30,7 +30,7 @@ public class MedicoController {
         return ResponseEntity.ok(medicoService.obtenerMedicoPorId(id));
     }
 
-    @GetMapping("/citas/medico/{medicoId}")
+    @GetMapping("/{medicoId}/citas")
     public ResponseEntity<List<CitaDTO>> obtenerCitasPorMedico(@PathVariable Long medicoId) {
         return ResponseEntity.ok(medicoService.obtenerCitasPorMedico(medicoId));
     }

@@ -1,5 +1,6 @@
 package com.atencion.medica.servicios.Impl;
 
+import com.atencion.medica.dtos.CitaDTO;
 import com.atencion.medica.dtos.HistorialMedicoDTO;
 import com.atencion.medica.dtos.MedicoDTO;
 import com.atencion.medica.dtos.PacienteDTO;
@@ -25,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Service //spring
 @Transactional //spring
@@ -78,7 +81,7 @@ public class HospitalServiceImpl implements HospitalService {
         Paciente paciente = pacienteOpt.get();
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Cita> citasPaginadas = citaRepository.findByPacienteHistorialClinicoId(historialId, pageable);
+        Page<Cita> citasPaginadas = citaRepository.findByPacienteId(paciente.getId(), pageable);
 
         List<CitaDTO> citasDTO = mapper.citasToCitasDTO(citasPaginadas.getContent());
 
@@ -138,7 +141,13 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     public List<CitaDTO> obtenerCitasPorFecha(String fecha) {
-        return mapper.citasToCitasDTO(citaRepository.findByFechaCita(fecha));
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date fechaDate = dateFormat.parse(fecha);
+            return mapper.citasToCitasDTO(citaRepository.findByFechaCita(fechaDate));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Formato de fecha inválido. Use yyyy-MM-dd", e);
+        }
     }
 
     @Override

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
-public class ClienteController {
+@RequestMapping("/api/v1/pacientes")
+public class PacienteController {
     @Autowired
     private HospitalService medicoService;
 
@@ -26,7 +26,7 @@ public class ClienteController {
         return ResponseEntity.ok(historial);
     }
 
-    @GetMapping("/citas/paciente/{pacienteId}")
+    @GetMapping("/{pacienteId}/citas")
     public ResponseEntity<List<CitaDTO>> obtenerCitasPorPaciente(@PathVariable Long pacienteId) {
         return ResponseEntity.ok(medicoService.obtenerCitasPorPaciente(pacienteId));
     }
